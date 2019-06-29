@@ -4,7 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-
+    env(SPOTIFY_CLIENT_ID): ~
+    env(SPOTIFY_CLIENT_SECRET): ~
+    env(SPOTIFY_REDIRECT_URI): ~
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -25,3 +27,8 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Client\SpotifyClient:
+        $clientId: '%env(string:SPOTIFY_CLIENT_ID)%'
+        $clientSecret: '%env(string:SPOTIFY_CLIENT_SECRET)%'
+        $redirectUri: '%env(string:SPOTIFY_REDIRECT_URI)%'

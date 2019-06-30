@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class SpotifyClient
 {
@@ -22,7 +23,7 @@ class SpotifyClient
         'user-library-read',
         'user-library-modify',
     ];
-    private const API_BASE_URL = 'https://api.spotify.com/v1';
+    private const API_BASE_URL = 'https://api.spotify.com/v1/';
     private const ACCOUNTS_BASE_URL = 'https://accounts.spotify.com/';
     private const OAUTH_2_GRANT_TYPE_AUTHORIZATION = 'authorization_code';
     private const OAUTH_2_GRANT_TYPE_REFRESH = 'refresh_token';
@@ -102,6 +103,29 @@ class SpotifyClient
             $response->toArray(false),
             $response->getStatusCode()
         );
+    }
+
+    public function me(string $accessToken): array
+    {
+        $response = $this->makeAuthRequest($accessToken, 'me');
+
+        return $response->toArray();
+    }
+
+    private function makeAuthRequest(string $accessToken, string $path, ?string $method = 'GET'): ResponseInterface
+    {
+        $options = [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $accessToken
+            ]
+        ];
+
+        return $this->http->request($method, $this->endpoint($path), $options);
+    }
+
+    private function endpoint(string $path): string
+    {
+        return self::API_BASE_URL . $path;
     }
 
     private function getScopes(): string

@@ -1,0 +1,20 @@
+SpotifyUser:
+  type: object
+  config:
+    name: SpotifyUser
+    description: 'A user from the Spotify API'
+    fields:
+      id:
+        type: 'ID!'
+      followers:
+        type: 'SpotifyUserFollowers!'
+      displayName:
+        type: 'String!'
+      images:
+        type: '[SpotifyUserImage!]!'
+      birthdate:
+        type: 'DateTime!'
+      email:
+        type: 'String!'
+      href:
+        type: 'String'

@@ -32,3 +32,7 @@ services:
         $clientId: '%env(string:SPOTIFY_CLIENT_ID)%'
         $clientSecret: '%env(string:SPOTIFY_CLIENT_SECRET)%'
         $redirectUri: '%env(string:SPOTIFY_REDIRECT_URI)%'
+
+    App\EventListener\SpotifyUserInitialization:
+        tags:
+            - { name: kernel.event_listener, event: graphql.pre_executor, method: onPreExecutor }

@@ -3,15 +3,7 @@ Query:
   config:
     name: Query
     fields:
-      hello:
-        description: 'Get hello'
-        type: 'String!'
-        resolve: 'world'
-        #If you want to use a Relay connection
-        #argsBuilder: Relay::Connection
-        #resolve: '@=resolver("App\\GraphQL\\Resolver\\Query\\HelloResolver", [args])'
-        #args:
-        #Put here your custom args for you query (if any)
-          #first:
-            #type: Int
-            #defaultValue: 30
+      viewer:
+        description: 'Get the current user logged into Spotify'
+        type: 'SpotifyUser'
+        resolve: '@=resolver("App\\GraphQL\\Resolver\\Query\\ViewerResolver", [info])'

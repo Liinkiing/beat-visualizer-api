@@ -1,0 +1,10 @@
+SpotifyUserFollowers:
+  type: object
+  config:
+    name: SpotifyUserFollowers
+    description: 'Represent the followers of the user'
+    fields:
+      href:
+        type: 'String'
+      total:
+        type: 'Int!'

@@ -15,7 +15,8 @@
         "symfony/framework-bundle": "4.3.*",
         "symfony/http-client": "4.3.*",
         "symfony/var-dumper": "4.3.*",
-        "symfony/yaml": "4.3.*"
+        "symfony/yaml": "4.3.*",
+        "ext-json": "*"
     },
     "require-dev": {
         "overblog/graphiql-bundle": "^0.1.2"

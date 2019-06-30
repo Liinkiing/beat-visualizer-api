@@ -24,7 +24,8 @@ class SpotifyClient
     ];
     private const API_BASE_URL = 'https://api.spotify.com/v1';
     private const ACCOUNTS_BASE_URL = 'https://accounts.spotify.com/';
-    private const OAUTH_2_GRANT_TYPE = 'authorization_code';
+    private const OAUTH_2_GRANT_TYPE_AUTHORIZATION = 'authorization_code';
+    private const OAUTH_2_GRANT_TYPE_REFRESH = 'refresh_token';
 
     protected $redirectUri;
     protected $clientId;
@@ -39,7 +40,7 @@ class SpotifyClient
         $this->http = $http;
     }
 
-    public function authorize(): Response
+    public function getAuthorizeUri(): Response
     {
         $options = [
             'query' => [
@@ -61,7 +62,7 @@ class SpotifyClient
     {
         $options = [
             'body' => [
-                'grant_type' => self::OAUTH_2_GRANT_TYPE,
+                'grant_type' => self::OAUTH_2_GRANT_TYPE_AUTHORIZATION,
                 'code' => $authorizationCode,
                 'redirect_uri' => $this->redirectUri,
                 'client_id' => $this->clientId,
@@ -69,6 +70,29 @@ class SpotifyClient
             ],
             'headers' => [
                 'Content-Type' => 'application/x-www-form-urlencoded'
+            ]
+        ];
+
+        $response = $this->http->request('POST', self::ACCOUNTS_BASE_URL . 'api/token', $options);
+
+        return new JsonResponse(
+            $response->toArray(false),
+            $response->getStatusCode()
+        );
+    }
+
+    public function askNewToken(string $refreshToken): Response
+    {
+        $options = [
+            'body' => [
+                'grant_type' => self::OAUTH_2_GRANT_TYPE_REFRESH,
+                'refresh_token' => $refreshToken,
+            ],
+            'headers' => [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'Authorization' => 'Basic ' . base64_encode(
+                        $this->clientId . ':' . $this->clientSecret
+                    )
             ]
         ];
 

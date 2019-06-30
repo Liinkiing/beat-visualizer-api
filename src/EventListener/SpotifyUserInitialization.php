@@ -14,29 +14,36 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class SpotifyUserInitialization
 {
-    public const UNAUTHORIZED_REQUEST_MESSAGE = 'UNAUTHORIZED';
-
     protected $client;
     private $stack;
+    private $devAccessToken;
+    private $appEnv;
 
-    public function __construct(SpotifyClient $client, RequestStack $stack)
+    public function __construct(SpotifyClient $client, RequestStack $stack, string $appEnv, ?string $devAccessToken)
     {
         $this->client = $client;
         $this->stack = $stack;
+        $this->devAccessToken = $devAccessToken;
+        $this->appEnv = $appEnv;
     }
 
     public function onPreExecutor(ExecutorArgumentsEvent $event): void
     {
-        $accessToken = str_replace(
-            'Bearer ',
-            '',
-            trim($this->stack->getCurrentRequest()->headers->get('Authorization'))
-        );
+        if ($this->appEnv !== 'prod' && $this->devAccessToken) {
+            $accessToken = $this->devAccessToken;
+        } else {
+            $accessToken = str_replace(
+                'Bearer ',
+                '',
+                trim($this->stack->getCurrentRequest()->headers->get('Authorization'))
+            );
+        }
         if ($accessToken) {
             try {
                 $userFromApi = $this->client->me($accessToken);
                 $event->setRootValue(
                     User::createFromApi($userFromApi)
+                        ->setAccessToken($accessToken)
                 );
             } catch (ClientException $exception) {
                 if ($exception->getCode() === Response::HTTP_UNAUTHORIZED) {

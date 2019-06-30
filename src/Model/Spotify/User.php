@@ -16,6 +16,7 @@ class User implements ApiModel
     protected $birthdate;
     protected $country;
     protected $followers;
+    protected $accessToken;
 
     public static function createFromApi(array $apiResponse): self
     {
@@ -93,6 +94,18 @@ class User implements ApiModel
     public function getFollowers(): UserFollowers
     {
         return $this->followers;
+    }
+
+    public function getAccessToken(): string
+    {
+        return $this->accessToken;
+    }
+
+    public function setAccessToken(string $accessToken): self
+    {
+        $this->accessToken = $accessToken;
+
+        return $this;
     }
 
 }

@@ -28,7 +28,6 @@ class SpotifyUserInitialization
             trim($this->stack->getCurrentRequest()->headers->get('Authorization'))
         );
         if ($accessToken) {
-            $event->setRootValue($accessToken);
             try {
                 $userFromApi = $this->client->me($accessToken);
                 $event->setRootValue(

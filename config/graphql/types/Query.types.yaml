@@ -1,0 +1,9 @@
+Query:
+  type: object
+  config:
+    name: Query
+    fields:
+      viewer:
+        description: 'Get the current user logged into Spotify'
+        type: 'SpotifyUser'
+        resolve: '@=resolver("App\\GraphQL\\Resolver\\Query\\ViewerResolver", [info])'

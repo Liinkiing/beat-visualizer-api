@@ -1,0 +1,12 @@
+SpotifyUserImage:
+  type: object
+  config:
+    name: SpotifyUserImage
+    description: 'An image representation of the user'
+    fields:
+      url:
+        type: 'String!'
+      height:
+        type: 'Int'
+      width:
+        type: 'Int'

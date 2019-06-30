@@ -109,6 +109,13 @@ class SpotifyClient
         return $response->toArray();
     }
 
+    public function mePlayer(string $accessToken): array
+    {
+        $response = $this->makeAuthRequest($accessToken, 'me/player');
+
+        return $response->toArray();
+    }
+
     private function makeAuthRequest(string $accessToken, string $path, ?string $method = 'GET'): ResponseInterface
     {
         $options = [

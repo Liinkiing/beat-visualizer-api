@@ -18,3 +18,6 @@ SpotifyUser:
         type: 'String!'
       href:
         type: 'String'
+      player:
+        type: 'SpotifyUserPlayer!'
+        resolve: '@=resolver("App\\GraphQL\\Resolver\\SpotifyUser\\SpotifyUserPlayerResolver", [value])'

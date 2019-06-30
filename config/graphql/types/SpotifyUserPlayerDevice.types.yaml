@@ -1,0 +1,19 @@
+SpotifyUserPlayerDevice:
+  type: object
+  config:
+    name: SpotifyUserPlayerDevice
+    fields:
+      id:
+        type: 'ID!'
+      active:
+        type: 'Boolean!'
+      privateSession:
+        type: 'Boolean!'
+      restricted:
+        type: 'Boolean!'
+      name:
+        type: 'String!'
+      type:
+        type: 'String!'
+      volume:
+        type: 'Int!'

@@ -1,0 +1,18 @@
+SpotifyUserPlayer:
+  type: object
+  config:
+    name: SpotifyUserPlayer
+    fields:
+      device:
+        type: 'SpotifyUserPlayerDevice!'
+        description: 'Get the current playing device of the user'
+      shuffling:
+        type: 'Boolean!'
+      repeating:
+        type: 'Boolean!'
+      timestamp:
+        type: 'Int!'
+      progression:
+        type: 'Int!'
+      playing:
+        type: 'Boolean!'

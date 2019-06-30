@@ -1,0 +1,19 @@
+SpotifyUserPlaylist:
+  type: object
+  inherits:
+    - PaginatedItem
+  config:
+    interfaces:
+      - PaginatedItem
+    name: SpotifyUserPlaylist
+    fields:
+      uri:
+        type: 'String!'
+      href:
+        type: 'String!'
+      images:
+        type: '[SpotifyUserImage!]!'
+      name:
+        type: 'String!'
+      public:
+        type: 'Boolean'

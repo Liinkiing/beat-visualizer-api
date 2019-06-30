@@ -2,6 +2,8 @@ overblog_graphql:
     definitions:
         schema:
             query: Query
+            types:
+                - SpotifyUserPlaylist
         mappings:
             auto_discover: false
             types:

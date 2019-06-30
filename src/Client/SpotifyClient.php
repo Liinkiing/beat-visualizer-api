@@ -116,13 +116,24 @@ class SpotifyClient
         return $response->toArray();
     }
 
-    private function makeAuthRequest(string $accessToken, string $path, ?string $method = 'GET'): ResponseInterface
+    public function mePlaylists(string $accessToken, int $limit = 20, $offset = 0): array
+    {
+        $response = $this->makeAuthRequest($accessToken, 'me/playlists', compact('limit', 'offset'));
+
+        return $response->toArray();
+    }
+
+    private function makeAuthRequest(string $accessToken, string $path, array $query = [], ?string $method = 'GET'): ResponseInterface
     {
         $options = [
             'headers' => [
                 'Authorization' => 'Bearer ' . $accessToken
             ]
         ];
+        $options = array_merge(
+            $options,
+            compact('query')
+        );
 
         return $this->http->request($method, $this->endpoint($path), $options);
     }

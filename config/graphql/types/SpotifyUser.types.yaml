@@ -20,6 +20,16 @@ SpotifyUser:
         type: 'String!'
       href:
         type: 'String'
+      playlists:
+        type: 'SpotifyPaginatedList!'
+        resolve: '@=resolver("App\\GraphQL\\Resolver\\SpotifyUser\\SpotifyUserPlaylistsResolver", [value, args])'
+        args:
+          limit:
+            type: 'Int'
+            defaultValue: 20
+          offset:
+            type: 'Int'
+            defaultValue: 0
       player:
         type: 'SpotifyUserPlayer!'
         resolve: '@=resolver("App\\GraphQL\\Resolver\\SpotifyUser\\SpotifyUserPlayerResolver", [value])'

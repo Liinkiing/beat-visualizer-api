@@ -1,0 +1,8 @@
+PaginatedItem:
+  type: interface
+  config:
+    name: PaginatedItem
+    resolveType: '@=resolver("App\\GraphQL\\Resolver\\Type\\PaginatedItemTypeResolver", [value])'
+    fields:
+      id:
+        type: 'ID!'

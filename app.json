@@ -1,0 +1,40 @@
+{
+  "addons": [
+
+  ],
+  "buildpacks": [
+
+  ],
+  "env": {
+    "APP_ENV": {
+      "required": true
+    },
+    "APP_SECRET": {
+      "generator": "secret"
+    },
+    "CORS_ALLOW_ORIGIN": {
+      "required": true
+    },
+    "SPOTIFY_CLIENT_HOST": {
+      "required": true
+    },
+    "SPOTIFY_CLIENT_ID": {
+      "required": true
+    },
+    "SPOTIFY_CLIENT_SECRET": {
+      "required": true
+    },
+    "SPOTIFY_REDIRECT_URI": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "name": "beat-visualizer-api",
+  "scripts": {
+  },
+  "stack": "heroku-18"
+}

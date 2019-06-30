@@ -13,6 +13,11 @@ SpotifyUserPlayer:
       timestamp:
         type: 'Int!'
       progression:
-        type: 'Int!'
+        type: 'String!'
+        resolve: '@=resolver("App\\GraphQL\\Resolver\\SpotifyUser\\SpotifyUserPlayerProgressionResolver", [value, args])'
+        args:
+          format:
+            type: 'ProgressionUnit'
+            defaultValue: '@=constant("App\\Enum\\ProgressionUnit::MINUTES_SECONDS")'
       playing:
         type: 'Boolean!'

@@ -1,0 +1,11 @@
+ProgressionUnit:
+  type: enum
+  config:
+    description: 'Available units for a progression.'
+    values:
+      MILLISECONDS:
+        value: '@=constant("App\\Enum\\ProgressionUnit::MILLISECONDS")'
+        description: 'A progression in ms.'
+      MINUTES_SECONDS:
+        value: '@=constant("App\\Enum\\ProgressionUnit::MINUTES_SECONDS")'
+        description: 'A progression in 00:00 format.'

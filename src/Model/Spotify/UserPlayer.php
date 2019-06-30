@@ -67,7 +67,7 @@ class UserPlayer implements ApiModel
         return $this->timestamp;
     }
 
-    public function getProgression(): string
+    public function getProgression(): int
     {
         return $this->progression;
     }

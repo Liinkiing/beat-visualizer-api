@@ -17,6 +17,7 @@ class User implements ApiModel
     protected $country;
     protected $followers;
     protected $accessToken;
+    protected $plan;
 
     public static function createFromApi(array $apiResponse): self
     {
@@ -28,7 +29,8 @@ class User implements ApiModel
             UserFollowers::createFromApi($apiResponse['followers']),
             $apiResponse['href'],
             $apiResponse['id'],
-            array_map([UserImage::class, 'createFromApi'], $apiResponse['images'] ?? [])
+            array_map([UserImage::class, 'createFromApi'], $apiResponse['images'] ?? []),
+            $apiResponse['product']
         );
     }
 
@@ -40,7 +42,8 @@ class User implements ApiModel
         UserFollowers $followers,
         string $href,
         string $id,
-        array $images
+        array $images,
+        string $plan
     )
     {
         $this->displayName = $displayName;
@@ -51,6 +54,7 @@ class User implements ApiModel
         $this->birthdate = new \DateTimeImmutable($birthdate);
         $this->country = $country;
         $this->followers = $followers;
+        $this->plan = $plan;
     }
 
     public function getDisplayName(): string
@@ -71,6 +75,11 @@ class User implements ApiModel
     public function getHref(): string
     {
         return $this->href;
+    }
+
+    public function getPlan(): string
+    {
+        return $this->plan;
     }
 
     /**

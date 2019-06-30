@@ -6,6 +6,8 @@ SpotifyUser:
     fields:
       id:
         type: 'ID!'
+      plan:
+        type: 'SpotifyUserPlan!'
       followers:
         type: 'SpotifyUserFollowers!'
       displayName:

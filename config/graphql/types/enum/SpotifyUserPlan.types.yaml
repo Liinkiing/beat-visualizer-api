@@ -1,0 +1,14 @@
+SpotifyUserPlan:
+  type: enum
+  config:
+    description: 'Available user plans.'
+    values:
+      PREMIUM:
+        value: 'premium'
+        description: 'A premium plan. The user has access to all of Spotify features.'
+      FREE:
+        value: 'free'
+        description: 'A free plan. The user has access to basic Spotify features.'
+      OPEN:
+        value: 'open'
+        description: 'An open plan. Can be considered the same as "FREE".'

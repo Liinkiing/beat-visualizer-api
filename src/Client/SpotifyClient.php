@@ -59,7 +59,7 @@ class SpotifyClient
         );
     }
 
-    public function askToken(string $authorizationCode): Response
+    public function askToken(string $authorizationCode): array
     {
         $options = [
             'body' => [
@@ -76,10 +76,7 @@ class SpotifyClient
 
         $response = $this->http->request('POST', self::ACCOUNTS_BASE_URL . 'api/token', $options);
 
-        return new JsonResponse(
-            $response->toArray(false),
-            $response->getStatusCode()
-        );
+        return $response->toArray();
     }
 
     public function askNewToken(string $refreshToken): Response

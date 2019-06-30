@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Client\SpotifyClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,13 +17,15 @@ class SpotifyController extends AbstractController
 {
 
     private $client;
+    private $clientRedirectUrl;
 
     protected const REFRESH_TOKEN_PARAM_NAME = 'refresh_token';
     protected const AUTH_CODE_PARAM_NAME = 'code';
 
-    public function __construct(SpotifyClient $client)
+    public function __construct(SpotifyClient $client, string $clientRedirectUrl)
     {
         $this->client = $client;
+        $this->clientRedirectUrl = $clientRedirectUrl;
     }
 
     /**
@@ -40,11 +43,17 @@ class SpotifyController extends AbstractController
      *     requirements={"_format": "json"},
      *     defaults={"_format": "json"}),
      */
-    public function authCallbackAction(Request $request): Response
+    public function authCallbackAction(Request $request): RedirectResponse
     {
         $code = $request->query->get(self::AUTH_CODE_PARAM_NAME);
 
-        return $this->client->askToken($code);
+        ['access_token' => $access_token, 'refresh_token' => $refresh_token] = $this->client->askToken($code);
+
+        $query = http_build_query(compact('access_token', 'refresh_token'));
+
+        return $this->redirect(
+            "$this->clientRedirectUrl?$query"
+        );
     }
 
     /**

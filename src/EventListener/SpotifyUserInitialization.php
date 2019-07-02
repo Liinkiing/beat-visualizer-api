@@ -14,6 +14,8 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class SpotifyUserInitialization
 {
+    public const SPOTIFY_DEPENDANT_OPERATION_NAMES = ['ViewerQuery'];
+
     protected $client;
     private $stack;
     private $devAccessToken;
@@ -29,6 +31,9 @@ class SpotifyUserInitialization
 
     public function onPreExecutor(ExecutorArgumentsEvent $event): void
     {
+        if (!$this->stack->getCurrentRequest()->headers->has('Authorization')) {
+            return;
+        }
         if ($this->appEnv !== 'prod' && $this->devAccessToken) {
             $accessToken = $this->devAccessToken;
         } else {

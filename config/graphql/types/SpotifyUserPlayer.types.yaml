@@ -8,8 +8,8 @@ SpotifyUserPlayer:
         description: 'Get the current playing device of the user'
       shuffling:
         type: 'Boolean!'
-      repeating:
-        type: 'Boolean!'
+      repeat:
+        type: 'SpotifyUserRepeatMode!'
       timestamp:
         type: 'Int!'
       progression:

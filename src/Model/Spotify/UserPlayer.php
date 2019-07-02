@@ -5,25 +5,23 @@ namespace App\Model\Spotify;
 
 
 use App\Model\ApiModel;
-use function Utils\onOffToBoolean;
 
 class UserPlayer implements ApiModel
 {
 
     protected $device;
     protected $shuffling;
-    protected $repeating;
+    protected $repeat;
     protected $timestamp;
     protected $progression;
     protected $playing;
 
     public static function createFromApi(array $apiResponse): self
     {
-        dump($apiResponse);
         return new self(
             UserPlayerDevice::createFromApi($apiResponse['device']),
             $apiResponse['shuffle_state'],
-            onOffToBoolean($apiResponse['repeat_state']),
+            $apiResponse['repeat_state'],
             (int)$apiResponse['timestamp'],
             (int)$apiResponse['progress_ms'],
             $apiResponse['is_playing']
@@ -33,7 +31,7 @@ class UserPlayer implements ApiModel
     private function __construct(
         UserPlayerDevice $device,
         bool $shuffling,
-        bool $repeating,
+        string $repeat,
         int $timestamp,
         int $progression,
         bool $playing
@@ -41,7 +39,7 @@ class UserPlayer implements ApiModel
     {
         $this->device = $device;
         $this->shuffling = $shuffling;
-        $this->repeating = $repeating;
+        $this->repeat = $repeat;
         $this->timestamp = $timestamp;
         $this->progression = $progression;
         $this->playing = $playing;
@@ -57,9 +55,9 @@ class UserPlayer implements ApiModel
         return $this->shuffling;
     }
 
-    public function getRepeating(): string
+    public function getRepeat(): string
     {
-        return $this->repeating;
+        return $this->repeat;
     }
 
     public function getTimestamp(): string

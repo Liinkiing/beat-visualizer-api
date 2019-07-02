@@ -1,0 +1,14 @@
+SpotifyUserRepeatMode:
+  type: enum
+  config:
+    description: 'Available repeat mode.'
+    values:
+      TRACK:
+        value: '@=constant("App\\Enum\\SpotifyUserRepeatMode::TRACK")'
+        description: 'Repeat the current track.'
+      CONTEXT:
+        value: '@=constant("App\\Enum\\SpotifyUserRepeatMode::CONTEXT")'
+        description: 'Repeat the current context.'
+      OFF:
+        value: '@=constant("App\\Enum\\SpotifyUserRepeatMode::OFF")'
+        description: 'Turn repeat off.'

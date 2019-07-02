@@ -1,0 +1,11 @@
+ChangeUserPlayerStateInput:
+  type: relay-mutation-input
+  config:
+    description: 'Input of changeUserPlayerState mutation'
+    fields:
+      shuffle:
+        type: 'Boolean!'
+        description: 'Set the shuffling state of the player'
+      repeat:
+        type: 'SpotifyUserRepeatMode!'
+        description: 'Set the repeat state of the player'

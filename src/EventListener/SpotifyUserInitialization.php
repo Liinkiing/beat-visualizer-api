@@ -18,15 +18,11 @@ class SpotifyUserInitialization
 
     protected $client;
     private $stack;
-    private $devAccessToken;
-    private $appEnv;
 
-    public function __construct(SpotifyClient $client, RequestStack $stack, string $appEnv, ?string $devAccessToken)
+    public function __construct(SpotifyClient $client, RequestStack $stack)
     {
         $this->client = $client;
         $this->stack = $stack;
-        $this->devAccessToken = $devAccessToken;
-        $this->appEnv = $appEnv;
     }
 
     public function onPreExecutor(ExecutorArgumentsEvent $event): void
@@ -34,15 +30,11 @@ class SpotifyUserInitialization
         if (!$this->stack->getCurrentRequest()->headers->has('Authorization')) {
             return;
         }
-        if ($this->appEnv !== 'prod' && $this->devAccessToken) {
-            $accessToken = $this->devAccessToken;
-        } else {
-            $accessToken = str_replace(
-                'Bearer ',
-                '',
-                trim($this->stack->getCurrentRequest()->headers->get('Authorization'))
-            );
-        }
+        $accessToken = str_replace(
+            'Bearer ',
+            '',
+            trim($this->stack->getCurrentRequest()->headers->get('Authorization'))
+        );
         if ($accessToken) {
             try {
                 $userFromApi = $this->client->me($accessToken);

@@ -1,0 +1,13 @@
+Mutation:
+  type: object
+  config:
+    name: Mutation
+    fields:
+      changeUserPlayerState:
+        description: 'Change the current state of the player the user is listening on'
+        access: '@=service("App\\GraphQL\\Resolver\\UserIsLoggedThroughSpotifyResolver").resolve(info)'
+        builder: 'Relay::Mutation'
+        builderConfig:
+          inputType: ChangeUserPlayerStateInput
+          payloadType: ChangeUserPlayerStatePayload
+          mutateAndGetPayload: '@=mutation("App\\GraphQL\\Mutation\\ChangeUserPlayerStateMutation", [info.rootValue, value])'

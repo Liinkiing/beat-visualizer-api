@@ -2,6 +2,7 @@
 
 namespace App\Client;
 
+use App\Enum\SpotifyUserRepeatMode;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -123,12 +124,57 @@ class SpotifyClient
         return $response->toArray();
     }
 
-    private function makeAuthRequest(string $accessToken, string $path, array $query = [], ?string $method = 'GET'): ResponseInterface
+    public function changeMePlayerState(string $accessToken, string $repeat, bool $shuffle): array
+    {
+        // I use the Symfony HTTP Client concurrent requests feature here to speed up time
+        $responses = [
+            $this->changeMePlayerRepeat($accessToken, $repeat),
+            $this->changeMePlayerShuffle($accessToken, $shuffle),
+        ];
+
+        try {
+            $contents = array_map(static function (ResponseInterface $response) {
+                return $response->getContent();
+            }, $responses);
+            return ['success' => true];
+        } catch (\Exception $exception) {
+            throw $exception;
+        }
+    }
+
+    private function changeMePlayerShuffle(string $accessToken, bool $state, ?string $deviceId = null): ResponseInterface
+    {
+        $query = [
+            'state' => $state ? 'true' : 'false',
+            'deviceId' => $deviceId
+        ];
+
+        return $this->makeAuthRequest($accessToken, 'me/player/shuffle', $query, 'PUT', ['Content-Length' => '0']);
+    }
+
+    private function changeMePlayerRepeat(string $accessToken, string $state, ?string $deviceId = null): ResponseInterface
+    {
+        if (!SpotifyUserRepeatMode::isValueValid($state)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Invalid repeat mode "%s". Available modes: %s',
+                    $state,
+                    implode(',', SpotifyUserRepeatMode::getAvailableValues())
+                )
+            );
+        }
+
+        $query = compact('state', 'deviceId');
+
+        return $this->makeAuthRequest($accessToken, 'me/player/repeat', $query, 'PUT', ['Content-Length' => '0']);
+    }
+
+    private function makeAuthRequest(string $accessToken, string $path, array $query = [], ?string $method = 'GET', ?array $headers = []): ResponseInterface
     {
         $options = [
-            'headers' => [
+            'headers' => array_merge([
                 'Authorization' => 'Bearer ' . $accessToken
-            ]
+            ], $headers)
         ];
         $options = array_merge(
             $options,

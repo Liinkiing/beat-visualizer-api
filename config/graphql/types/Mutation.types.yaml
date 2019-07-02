@@ -10,4 +10,9 @@ Mutation:
         builderConfig:
           inputType: ChangeUserPlayerStateInput
           payloadType: ChangeUserPlayerStatePayload
-          mutateAndGetPayload: '@=mutation("App\\GraphQL\\Mutation\\ChangeUserPlayerStateMutation", [info.rootValue, value])'
+          mutateAndGetPayload: '@=mutation("App\\GraphQL\\Mutation\\Player\\ChangeUserPlayerStateMutation", [info.rootValue, value])'
+      toggleUserPlayerPlayback:
+        access: '@=service("App\\GraphQL\\Resolver\\UserIsLoggedThroughSpotifyResolver").resolve(info)'
+        type: 'ToggleUserPlayerPlaybackPayload!'
+        description: "Start a new context or resume current playback on the user's active device."
+        resolve: '@=mutation("App\\GraphQL\\Mutation\\Player\\ToggleUserPlayerPlaybackMutation", [info.rootValue])'

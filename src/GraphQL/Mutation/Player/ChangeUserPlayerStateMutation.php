@@ -1,6 +1,6 @@
 <?php
 
-namespace App\GraphQL\Mutation;
+namespace App\GraphQL\Mutation\Player;
 
 use App\Client\SpotifyClient;
 use App\GraphQL\Resolver\SpotifyUser\SpotifyUserPlayerResolver;

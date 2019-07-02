@@ -3,6 +3,7 @@
 namespace App\Client;
 
 use App\Enum\SpotifyUserRepeatMode;
+use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -150,6 +151,30 @@ class SpotifyClient
         ];
 
         return $this->makeAuthRequest($accessToken, 'me/player/shuffle', $query, 'PUT', ['Content-Length' => '0']);
+    }
+
+    public function toggleMePlayerPlay(string $accessToken, ?string $deviceId = null): void
+    {
+        $query = [
+            'deviceId' => $deviceId
+        ];
+        $headers = ['Content-Length' => '0'];
+        $method = 'PUT';
+        $path = 'me/player/pause';
+
+        try {
+            $this->makeAuthRequest($accessToken, $path, $query, $method, $headers)->getContent();
+        } catch (ClientException $exception) {
+            // If a forbidden is thrown here, it's mean that, for the spotify API, the 'playing' boolean should be
+            // the opposite, to allow a correct toggle behaviour
+            if ($exception->getCode() === Response::HTTP_FORBIDDEN) {
+                $path = 'me/player/play';
+                try {
+                    $this->makeAuthRequest($accessToken, $path, $query, $method, $headers)->getContent();
+                } catch (\Exception $exception) {
+                }
+            }
+        }
     }
 
     private function changeMePlayerRepeat(string $accessToken, string $state, ?string $deviceId = null): ResponseInterface

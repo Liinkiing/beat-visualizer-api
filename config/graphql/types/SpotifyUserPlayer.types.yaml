@@ -3,6 +3,10 @@ SpotifyUserPlayer:
   config:
     name: SpotifyUserPlayer
     fields:
+      id:
+        builder: "Relay::GlobalId"
+        builderConfig:
+          typeName: SpotifyUserPlayer
       device:
         type: 'SpotifyUserPlayerDevice!'
         description: 'Get the current playing device of the user'

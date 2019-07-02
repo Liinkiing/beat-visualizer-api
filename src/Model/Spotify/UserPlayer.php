@@ -9,6 +9,7 @@ use App\Model\ApiModel;
 class UserPlayer implements ApiModel
 {
 
+    protected $id = 'SpotifyUserPlayer';
     protected $device;
     protected $shuffling;
     protected $repeat;
@@ -75,5 +76,9 @@ class UserPlayer implements ApiModel
         return $this->playing;
     }
 
-
+    public function getId(): string
+    {
+        return $this->id;
+    }
+    
 }
